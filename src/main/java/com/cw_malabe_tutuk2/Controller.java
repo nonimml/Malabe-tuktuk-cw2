@@ -58,4 +58,14 @@ public class Controller {
             System.out.println("can't open the Update Menu");
         }
     }
+
+    @FXML
+    private void openDealerWindow(ActionEvent event){
+        try {
+            MainApplication mainApplication = new MainApplication();
+            mainApplication.ViewDealers();
+        } catch (Exception e) {
+            System.out.println("Can't open the Dealer Window");
+        }
+    }
 }
