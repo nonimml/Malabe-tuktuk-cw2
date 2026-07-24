@@ -37,4 +37,28 @@ public class Inventory {
     public List<Product> getCartItems(){
         return cart;
     }
+
+    public List<Product> ViewInventory() {
+        List<Product> sortedList = new ArrayList<>(this.products);
+        int size = sortedList.size();
+        boolean swap = true;
+        while(swap){
+            swap = false;
+            for(int i=0;i<size-1;i++){
+                Product current = sortedList.get(i);
+                Product next = sortedList.get(i+1);
+
+                int category = current.getType().compareTo(next.getType());
+                int Code = current.getCode().compareTo(next.getCode());
+
+                if(category >0 || (category==0 && Code >0)){
+                    swap = true;
+                    sortedList.set(i,next);
+                    sortedList.set(i+1,current);
+                }
+
+            }
+        }
+        return sortedList;
+    }
 }
