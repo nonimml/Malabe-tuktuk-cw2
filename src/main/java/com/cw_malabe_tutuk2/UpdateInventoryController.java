@@ -10,6 +10,9 @@ import java.util.List;
 
 public class UpdateInventoryController {
 
+    Inventory inventory = new Inventory();
+    FileHandler fileHandler = new FileHandler();
+
     @FXML private TextField brand;
     @FXML private TextField codeField;
     @FXML private TextField date;
