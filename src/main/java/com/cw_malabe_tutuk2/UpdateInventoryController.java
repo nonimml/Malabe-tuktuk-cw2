@@ -17,10 +17,28 @@ public class UpdateInventoryController {
     @FXML private TextField stock;
     @FXML private TextField type;
     @FXML private TextField lowStock;
-
+    private boolean UpdateMode = false;
 
     @FXML private void Cancel(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    public String update(Product product,boolean updateMode){
+        this.UpdateMode = updateMode;
+
+        if (product != null) {
+            codeField.setText(product.getCode());
+            codeField.setDisable(true);
+            brand.setText(product.getBrand());
+            name.setText(product.getName());
+            price.setText(String.valueOf(product.getPrice()));
+            stock.setText(String.valueOf(product.getQuantity()));
+            type.setText(product.getType());
+            date.setText(product.getDate());
+            imagePath.setText(product.getImage());
+            lowStock.setText(String.valueOf(product.getMinThreshold()));
+        }
+        return null;
     }
 }
