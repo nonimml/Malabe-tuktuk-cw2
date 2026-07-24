@@ -2,6 +2,7 @@ package com.cw_malabe_tutuk2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Inventory {
     private List<Product> products;
@@ -60,5 +61,43 @@ public class Inventory {
             }
         }
         return sortedList;
+    }
+
+
+    public List<Dealer> RandomDealers(){
+        List<Dealer> sortedDealers  = new ArrayList<>();
+        Random random = new Random();
+        while (sortedDealers.size() < 4 && sortedDealers.size() < this.dealers.size()) {
+            int randomIndex = random.nextInt(this.dealers.size());
+            Dealer supplier = this.dealers.get(randomIndex);
+
+
+            boolean isDuplicate = false;
+            for (int i = 0; i < sortedDealers.size(); i++) {
+                Dealer d = sortedDealers.get(i);
+                if (d.getSupplierId().equals(supplier.getSupplierId())) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            if (!isDuplicate) {
+                sortedDealers.add(supplier);
+            }
+        }
+
+        for (int j = 0; j < sortedDealers.size() - 1; j++) {
+            for (int k = 0; k < sortedDealers.size() - 1 - j; k++) {
+                Dealer currentLocation = sortedDealers.get(k);
+                Dealer nextLocation = sortedDealers.get(k + 1);
+
+
+                if (currentLocation.getLocation().compareTo(nextLocation.getLocation()) > 0) {
+                    sortedDealers.set(k, nextLocation);
+                    sortedDealers.set(k + 1, currentLocation);
+                }
+            }
+        }
+        return sortedDealers;
     }
 }
