@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class Controller {
+
+    private Inventory inventory = new Inventory();
+    private FileHandler fileHandler = new FileHandler();
     @FXML private TableView<Product> inventoryTable;
     @FXML private TableColumn<Product, String> Code;
     @FXML private TableColumn<Product, String> Name;
@@ -68,4 +71,6 @@ public class Controller {
             System.out.println("Can't open the Dealer Window");
         }
     }
+
+
 }
