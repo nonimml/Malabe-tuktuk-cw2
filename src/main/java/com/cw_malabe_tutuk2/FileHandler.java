@@ -2,6 +2,8 @@ package com.cw_malabe_tutuk2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -154,5 +156,28 @@ public class FileHandler {
         }catch (FileNotFoundException e){
             System.out.println("Dealers_legacy:File Not Found");
         }
+    }
+
+
+    public  void DataWriter(Inventory inventory){
+        File directory = new File("src/main/java/com/cw_malabe_tutuk/data");
+        if(!directory.exists()){
+            directory.mkdir();
+        }
+
+        File file = new File(directory, "newinventory.txt");
+
+        try(FileWriter fileWriter = new FileWriter("src/main/java/com/cw_malabe_tutuk/data/newinventory.txt")){
+            List<Product> products = inventory.getProduct();
+            for(int j = 0;j<products.size();j++) {
+                Product product = products.get(j);
+                fileWriter.write(product.toString()+"\n");
+            }
+            fileWriter.close();
+            System.out.println("Successfully write the data");
+        }catch (IOException e){
+            System.out.println("Error: can't write to the file");
+        }
+
     }
 }
