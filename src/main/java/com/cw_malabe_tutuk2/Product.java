@@ -55,4 +55,44 @@ public class Product {
     public int getMinThreshold(){
         return minThreshold;
     }
+
+
+    public void setCode(String code){
+        this.code = code;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setBrand(String brand){
+        this.brand = brand;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
+    }
+
+    public void setType(String type){
+        this.type = type;
+    }
+
+    public void setDate(String date){
+        this.date = date;
+    }
+
+    public void setImage(String image){
+        this.image = image;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setMinThreshold(int value){
+        if(value > 0){
+            this.minThreshold = value;
+        }else{
+            this.minThreshold = 0;
+        }
+    }
 }
