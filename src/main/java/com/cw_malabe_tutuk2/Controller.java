@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,6 +164,64 @@ public class Controller {
             }
         }
         categoryFilter.setItems(categories);
+    }
+
+    public void AddToCartColumn(){
+        addToCart.setCellFactory(column -> new TableCell<Product,Void>(){
+            private final TextField qtyInput = new TextField();
+            private final Button addItemCart = new Button("Add");
+            private final HBox container = new HBox(10,qtyInput,addItemCart);
+            {
+                qtyInput.setPrefWidth(50);
+                qtyInput.setPromptText("qty");
+                addItemCart.setOnAction(event -> {
+                    try {
+                        Product product = (Product) getTableRow().getItem();
+                        if (product != null) {
+                            if(qtyInput.getText().isEmpty()){
+                                System.out.println("quantity is empty");
+                                return;
+                            }
+
+                            int quantity = Integer.parseInt(qtyInput.getText().trim());
+
+                            if (quantity < 1) {
+                                System.out.println("quantity should be greater than zero");
+                                return;
+                            }
+                            boolean itemExist = false;
+                            for(int i=0;i<posTable.getItems().size();i++){
+                                Product item = posTable.getItems().get(i);
+                                if(item.getCode().equalsIgnoreCase(product.getCode())){
+                                    itemExist = true;
+                                    item.setQuantity(item.getQuantity() + quantity);
+                                    posTable.getItems().set(i,item);
+                                    qtyInput.clear();
+                                    break;
+                                }
+                            }
+                            if(!itemExist) {
+                                Product cartItem = new Product(
+                                        product.getCode(),
+                                        product.getName(),
+                                        product.getPrice(),
+                                        quantity,
+                                        product.getType());
+                                posTable.getItems().add(cartItem);
+                                qtyInput.clear();
+                            }
+                            CartTotal();
+                        }
+                    }catch (NumberFormatException e){
+                        System.out.println("quantity should be a number not a string");
+                    }
+                });
+                emptyProperty().addListener(
+                        (value, wasEmpty, isEmpty) ->
+                                setGraphic(isEmpty ? null : container)
+                );
+            }
+        });
     }
 
 }
