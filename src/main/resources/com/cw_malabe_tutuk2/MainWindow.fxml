@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="625" prefWidth="1150" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cw_malabe_tutuk.Controller">
+<BorderPane prefHeight="625" prefWidth="1150" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cw_malabe_tutuk2.Controller">
     <top>
         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="1150.0" BorderPane.alignment="CENTER">
             <children>
