@@ -85,4 +85,31 @@ public class UpdateInventoryController {
         }
 
     }
+
+    private String readItemCode(String itemCode) {
+
+        if (itemCode == null || itemCode.length() != 4) {
+            System.out.println("Code should have 4 character and can't be empty");
+            return null;
+
+        }
+        boolean flagCodeChar = (itemCode.charAt(0) == 'P');
+
+        boolean flagCodedigit = true;
+        for (int i = 1; i < 4; i++) {
+            if (!Character.isDigit(itemCode.charAt(i))) {
+                flagCodedigit = false;
+            }
+        }
+
+        boolean flagCodeExist = false;
+        if (flagCodeChar && flagCodedigit) {
+            for (int j = 0; j < inventory.getProduct().size(); j++) {
+                if (itemCode.equals(inventory.getProduct().get(j).getCode())) {
+                    flagCodeExist = true;
+                    break;
+
+                }
+            }
+        }
 }
