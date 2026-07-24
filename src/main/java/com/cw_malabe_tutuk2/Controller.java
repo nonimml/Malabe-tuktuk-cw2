@@ -124,4 +124,20 @@ public class Controller {
 
     }
 
+    @FXML private void DeletePart(ActionEvent event){
+        Product deleteProduct = inventoryTable.getSelectionModel().getSelectedItem();
+        if(deleteProduct == null){
+            System.out.println("First Select the item you want to Delete");
+            return;
+        }
+        inventory.getProduct().remove(deleteProduct);
+        fileHandler.DataWriter(inventory);
+        List<Product> updatedInventoryList = inventory.ViewInventory();
+        ObservableList<Product> observableList  = FXCollections.observableArrayList(updatedInventoryList);
+        inventoryTable.setItems(observableList);
+        InventoryStatus();
+        loadCategory();
+
+    }
+
 }
