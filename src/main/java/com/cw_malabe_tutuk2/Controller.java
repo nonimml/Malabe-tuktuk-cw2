@@ -1,5 +1,6 @@
 package com.cw_malabe_tutuk2;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -30,4 +31,31 @@ public class Controller {
     @FXML private Label bulkDiscountLabel;
     @FXML private Label synergyDiscountLabel;
     @FXML private Label netTotalLabel;
+
+    @FXML
+    private void AddProduct(ActionEvent event) {
+        try {
+            MainApplication mainApplication = new MainApplication();
+            mainApplication.UpdateInventory(null);
+        } catch (Exception e) {
+            System.out.println("can't open the Add Part Menu");
+        }
+    }
+
+    @FXML private void UpdateProduct(ActionEvent event){
+        try {
+            Product selectedProduct = inventoryTable.getSelectionModel().getSelectedItem();
+
+            if(event.getSource() == updateBtn){
+                if(selectedProduct == null){
+                    System.out.println("select the row First");
+                    return;
+                }
+            }
+            MainApplication mainApplication = new MainApplication();
+            mainApplication.UpdateInventory(selectedProduct);
+        }catch (Exception e){
+            System.out.println("can't open the Update Menu");
+        }
+    }
 }
