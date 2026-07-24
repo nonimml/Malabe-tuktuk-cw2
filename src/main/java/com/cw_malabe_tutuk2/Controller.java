@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
@@ -281,6 +282,30 @@ public class Controller {
         }else {
             System.out.println("Cart is empty load some Items");
         }
+    }
+
+
+    public void loadData() {
+        Code.setCellValueFactory(new PropertyValueFactory<>("code"));
+        Name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        Brand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        Type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        Date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        Price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        Image.setCellValueFactory(new PropertyValueFactory<>("image"));
+
+        partCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        partName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        unitPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        partQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        AddToCartColumn();
+
+        fileHandler.itemsData(inventory);
+        List<Product> sortedList = inventory.ViewInventory();
+        ObservableList<Product> observableList  = FXCollections.observableArrayList(sortedList);
+        inventoryTable.setItems(observableList);
+        InventoryStatus();
     }
 
 }
