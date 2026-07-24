@@ -121,4 +121,38 @@ public class FileHandler {
         }
         return null;
     }
+
+
+    public  void dealerData(Inventory inventory){
+        final int FIELD_COUNT = 4;
+        File DEALER_FILE = new File("src/main/java/com/cw_malabe_tutuk/data/dealers_legacy.txt");
+        if(!DEALER_FILE.exists()) {
+            System.out.println("File not Exists");
+            return;
+        }
+        try(Scanner dealer_reader = new Scanner(DEALER_FILE)){
+            while (dealer_reader.hasNextLine()){
+                String line = dealer_reader.nextLine();
+                List<String> Fields = parseLines(FIELD_COUNT,line);
+
+                try{
+                    String supplierId = Fields.get(0);
+
+                    String name = Fields.get(1);
+
+                    String contactInfo = Fields.get(2);
+
+                    String location = Fields.get(3);
+
+                    Dealer dealer = new Dealer(supplierId,name,contactInfo,location);
+                    inventory.addDealers(dealer);
+
+                }catch (Exception e){
+                    System.out.println("can't push data to the List");
+                }
+            }
+        }catch (FileNotFoundException e){
+            System.out.println("Dealers_legacy:File Not Found");
+        }
+    }
 }
