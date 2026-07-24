@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class UpdateInventoryController {
 
     @FXML private TextField brand;
@@ -40,5 +42,47 @@ public class UpdateInventoryController {
             lowStock.setText(String.valueOf(product.getMinThreshold()));
         }
         return null;
+    }
+
+    @FXML private void insert(ActionEvent event){
+        fileHandler.itemsData(inventory);
+        if(codeField.getText().isEmpty() || brand.getText().isEmpty() || name.getText().isEmpty()
+                || price.getText().isEmpty() || stock.getText().isEmpty()
+                || type.getText().isEmpty() || date.getText().isEmpty()
+                || imagePath.getText().isEmpty() || lowStock.getText().isEmpty()) {
+            System.out.println("text filed is empty");
+            return;
+        }
+        try {
+            String Code = readItemCode(codeField.getText());
+            String Brand = brand.getText();
+            String Name =   name.getText();
+            double Price = readPrice(price.getText());
+            int Quantity = readInt(stock.getText());
+            String Type = type.getText().toUpperCase();
+            String Date = readDate(date.getText());
+            String ImagePath = imagePath.getText();
+            int LowStock = readInt(lowStock.getText());
+
+            Product product = new Product(Code,Brand,Name,Price,Quantity,Type,Date,ImagePath);
+            product.setMinThreshold(LowStock);
+
+            if(!this.UpdateMode){
+                inventory.getProduct().add(product);
+            }else{
+                List<Product> products = inventory.getProduct();
+                for(int i=0;i<products.size();i++){
+                    if(products.get(i).getCode().equalsIgnoreCase(Code)){
+                        products.set(i,product);
+                    }
+                }
+            }
+            System.out.println("Done!");
+            fileHandler.DataWriter(inventory);
+
+        }catch (Exception e){
+            System.out.println("Error: Save Canceled");
+        }
+
     }
 }
