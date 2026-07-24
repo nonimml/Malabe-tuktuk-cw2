@@ -106,4 +106,9 @@ public class Product {
             this.minThreshold = 0;
         }
     }
+
+    @Override
+    public String  toString(){
+        return code +","+ name +","+ brand +","+ "Rs."+price +","+ quantity +","+ type +","+ date + "," + image;
+    }
 }
