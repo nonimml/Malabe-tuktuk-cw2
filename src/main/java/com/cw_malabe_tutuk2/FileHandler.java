@@ -2,6 +2,10 @@ package com.cw_malabe_tutuk2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,6 +60,65 @@ public class FileHandler {
             return INVENTORY_FILE;
         }
         System.out.println("Can't Load the text files");
+        return null;
+    }
+
+
+    private  List<String> parseLines(int count ,String line){
+        if(count == 8){
+            if(line == null || line.trim().isEmpty()) {
+                return new ArrayList<>();
+            }
+            String characters = ";|\\||,(?!(?<=\\b[A-Za-z]{3,9} \\d{1,2},)\\s*\\d{4}\\b)";
+            String[] rawFiled = line.split(characters,-1);
+            List<String> items = new ArrayList<>();
+            for(String field : rawFiled){
+                items.add(clean(count,field));
+            }return items;
+        } else if (count == 4) {
+            if(line == null || line.trim().isEmpty()) {
+                return new ArrayList<>();
+            }
+            String characters = "[,;|]";
+            String[] rawFiled = line.split(characters,-1);
+            List<String> items = new ArrayList<>();
+            for(String field : rawFiled){
+                items.add(clean(count,field));
+            }return items;
+        }
+        return null;
+    }
+
+    private  String clean(int count ,String field){
+        if(count == 8){
+            String trimmed = field.trim();
+            trimmed = trimmed.replaceAll("(?i)^Rs\\.?\\s*","");
+            return trimmed.isEmpty() ? null : trimmed;
+        }
+        else if(count == 4){
+            String trimmed = field.trim();
+            return trimmed.isEmpty() ? null : trimmed;
+        }
+        return null;
+    }
+
+
+    private  String DateFormat(String date) {
+        String[] dateFormats = {"dd/MM/yyyy", "MM/dd/yyyy", "yyyy/MM/dd",
+                "dd-MM-yyyy", "MM-dd-yyyy", "yyyy-MM-dd",
+                "dd/MMM/yyyy", "MMM/dd/yyyy", "yyyy/MMM/dd",
+                "dd-MMM-yyyy", "MMM-dd-yyyy", "yyyy-MMM-dd",
+                "dd MMM, yyyy", "MMM dd, yyyy", "yyyy MMM, dd",
+                "dd MM yyyy", "MM dd yyyy", "yyyy MM dd"};
+        DateTimeFormatter finalFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        for (String format : dateFormats) {
+            try {
+                DateTimeFormatter Formats = DateTimeFormatter.ofPattern(format);
+                return LocalDate.parse(date.trim(), Formats).format(finalFormat);
+
+            } catch (DateTimeParseException e) {
+            }
+        }
         return null;
     }
 }
