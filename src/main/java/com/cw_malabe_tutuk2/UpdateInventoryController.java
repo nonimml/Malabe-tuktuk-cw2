@@ -129,4 +129,31 @@ public class UpdateInventoryController {
     }
 
 
+    private double readPrice(String value){
+        try {
+            Double Price =  Double.parseDouble(value);
+            if(!(Price < 1)){
+                return Price;
+            }
+            System.out.println("Price can't be Negative");
+        } catch (Exception e) {
+            System.out.println("Enter a number not a String");
+        }
+        return 0;
+    }
+
+    private Integer readInt(String value){
+        try {
+            int Number = Integer.parseInt(value);
+            if(!(Number < 0)){
+                return Number;
+            }
+            System.out.println("The Value can't be negative");
+        } catch (Exception e) {
+            System.out.println("Enter a numerical value not a String");
+        }
+        return 0;
+    }
+
+
 }
