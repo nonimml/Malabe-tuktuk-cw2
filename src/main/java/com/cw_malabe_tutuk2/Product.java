@@ -22,4 +22,37 @@ public class Product {
         this.setDate(date);
         this.setImage(image);
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getQuantity(){return quantity;}
+
+    public String getType() {
+        return type;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getImage() {
+        return image;
+    }
+    public int getMinThreshold(){
+        return minThreshold;
+    }
 }
