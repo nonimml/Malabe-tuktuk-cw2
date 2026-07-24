@@ -155,5 +155,64 @@ public class UpdateInventoryController {
         return 0;
     }
 
+    private String readDate(String date) {
+        String[] dateValues;
+
+        if (!date.contains("/") || date.length() != 10){
+            System.out.println("invalid format : formate DD/MM/YYYY");
+            return null;
+        }
+        dateValues = date.split("/");
+
+        if (dateValues[0].length() != 2 || dateValues[1].length() != 2 || dateValues[2].length() != 4 ) {
+            System.out.println("invalid format date should be: DD/MM/YYYY");
+            return null;
+        }
+
+        try{
+            int day = Integer.parseInt(dateValues[0]);
+            int month = Integer.parseInt(dateValues[1]);
+            int year = Integer.parseInt(dateValues[2]);
+
+            if(month < 1 || month > 12){
+                System.out.println("months can only be (1-12) not "+month);
+                return null;
+            }
+            else if (year < 2000 || year > 2100){
+                System.out.println("year is invalid it should be 2000-2100");
+                return null;
+            }
+
+            int[] monthdays = {31,28,31,30,31,30,31,30,31,30,31,30};
+
+            for(int i = 0;i<monthdays.length;i++) {
+
+                if ((month - 1) == i) {
+                    if ((i == 2) && (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+                        if (day < 1 || day > 29){
+                            System.out.println("Invalid day entered: " + day);
+                            return null;
+
+                        }
+
+                    }
+
+                    else{
+                        if (day < 1 || day > monthdays[i]) {
+                            System.out.println("days : " + monthdays[i] + "month" + month);
+                            return null;
+                        }
+                    }
+                    break;
+                }
+            }
+            return date;
+
+        }catch (NumberFormatException e){
+            System.out.println("Error: date can't contain String");
+        }
+        return null;
+    }
+
 
 }
