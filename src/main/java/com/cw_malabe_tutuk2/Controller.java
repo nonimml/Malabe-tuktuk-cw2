@@ -1,8 +1,13 @@
 package com.cw_malabe_tutuk2;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
@@ -69,6 +74,42 @@ public class Controller {
             mainApplication.ViewDealers();
         } catch (Exception e) {
             System.out.println("Can't open the Dealer Window");
+        }
+    }
+
+    @FXML private void FilterInventory(){
+
+        boolean isCategoryEmpty = categoryFilter.getSelectionModel().getSelectedItem() != null;
+        boolean isMinPriceEmpty = !minPriceInput.getText().trim().isEmpty();
+        boolean isMaxPriceEmpty = !maxPriceInput.getText().trim().isEmpty();
+        if(!isCategoryEmpty && !isMinPriceEmpty && !isMaxPriceEmpty) {
+            System.out.println("Filter is Empty add a filter first");
+            return;
+        }
+
+        try{
+            String selectedCategory = isCategoryEmpty ? categoryFilter.getSelectionModel().getSelectedItem() : null;
+            double minPrice = isMinPriceEmpty ? Double.parseDouble(minPriceInput.getText()): 0.0;
+            double maxPrice = isMaxPriceEmpty ? Double.parseDouble(maxPriceInput.getText()):0.0;
+
+            List<Product> filterProduct = new ArrayList<>();
+
+            for(Product product : inventory.getProduct()){
+                boolean matchCategory = (selectedCategory == null) || product.getType().equalsIgnoreCase(selectedCategory);
+                boolean matchMinPrice = product.getPrice() >= minPrice;
+                boolean matchMaxPrice = product.getPrice() <= maxPrice;
+
+                if(matchCategory && matchMinPrice && matchMaxPrice){
+                    filterProduct.add(product);
+                }
+
+            }
+
+            ObservableList<Product> observableList  = FXCollections.observableArrayList(filterProduct);
+            inventoryTable.setItems(observableList);
+
+        }catch(NullPointerException e){
+            System.out.println("values can't be null");
         }
     }
 
