@@ -140,4 +140,29 @@ public class Controller {
 
     }
 
+    public void InventoryStatus(){
+        loadCategory();
+        double totalPrice = 0.0;
+        for(int i=0;i<inventory.ViewInventory().size();i++){
+            Product product = inventory.ViewInventory().get(i);
+            totalPrice += (product.getPrice() * product.getQuantity());
+        }
+
+        totalCountLabel.setText("Total Parts: "+ inventory.ViewInventory().size());
+        totalValueLabel.setText("Total Inventory Value: Rs. "+totalPrice);
+    }
+
+    public void loadCategory(){
+        List<Product> products = inventory.getProduct();
+        ObservableList<String> categories = FXCollections.observableArrayList();
+
+        for(int i=0;i<products.size();i++){
+            String category = products.get(i).getType();
+            if(category != null && !categories.contains(category)){
+                categories.add(category);
+            }
+        }
+        categoryFilter.setItems(categories);
+    }
+
 }
