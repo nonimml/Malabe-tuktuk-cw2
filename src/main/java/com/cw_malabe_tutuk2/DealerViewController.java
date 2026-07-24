@@ -11,6 +11,9 @@ import java.util.List;
 
 public class DealerViewController {
 
+    Inventory inventory = new Inventory();
+    FileHandler fileHandler = new FileHandler();
+
     @FXML private TableView<Dealer> DealerTable;
     @FXML private TableColumn<Dealer, String> dealerContact;
     @FXML private TableColumn<Dealer, String> dealerId;
