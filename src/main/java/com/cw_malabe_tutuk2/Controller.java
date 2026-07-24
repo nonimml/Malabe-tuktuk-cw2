@@ -265,4 +265,22 @@ public class Controller {
 
     }
 
+    public void checkOut(ActionEvent event){
+        if(!posTable.getItems().isEmpty()){
+            if(event.getSource() == clearTable){
+                posTable.getItems().clear();
+                CartTotal();
+                return;
+            }
+            for(int i = 0; i<posTable.getItems().size();i++){
+                Product cartItems = posTable.getItems().get(i);
+                inventory.addToCart(cartItems);
+            }
+            posTable.getItems().clear();
+            CartTotal();
+        }else {
+            System.out.println("Cart is empty load some Items");
+        }
+    }
+
 }
