@@ -113,5 +113,15 @@ public class Controller {
         }
     }
 
+    @FXML private void ResetFilters(){
+        categoryFilter.getSelectionModel().clearSelection();
+        minPriceInput.clear();
+        maxPriceInput.clear();
+
+        List<Product> sortedList = inventory.ViewInventory();
+        ObservableList<Product> observableList  = FXCollections.observableArrayList(sortedList);
+        inventoryTable.setItems(observableList);
+
+    }
 
 }
