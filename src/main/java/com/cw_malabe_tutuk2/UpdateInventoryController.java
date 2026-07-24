@@ -115,6 +115,17 @@ public class UpdateInventoryController {
                 }
             }
         }
+        if (!flagCodeChar) {
+            System.out.println("Code should contain 'P' as the first character");
+            return null;
+        } else if (!flagCodedigit) {
+            System.out.println("code should contain 3 digits after the 'P' ");
+            return null;
+        } else if (flagCodeExist) {
+            System.out.println("Code already exists in inventory");
+            return null;
+        }
+        return itemCode;
     }
 
 
