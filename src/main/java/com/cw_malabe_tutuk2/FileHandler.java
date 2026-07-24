@@ -1,5 +1,6 @@
 package com.cw_malabe_tutuk2;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
@@ -44,5 +45,17 @@ public class FileHandler {
         }catch (FileNotFoundException e) {
             System.out.println("Inventory_legacy:File Not Found");
         }
+    }
+
+    private File textFileManager(){
+        File INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk/data/inventory_legacy.txt");
+        File NEW_INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk/data/newinventory.txt");
+        if(NEW_INVENTORY_FILE.exists())
+            return NEW_INVENTORY_FILE;
+        else if (INVENTORY_FILE.exists()) {
+            return INVENTORY_FILE;
+        }
+        System.out.println("Can't Load the text files");
+        return null;
     }
 }
