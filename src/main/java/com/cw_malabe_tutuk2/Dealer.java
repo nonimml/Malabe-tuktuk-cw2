@@ -28,4 +28,20 @@ public class Dealer {
     public String getLocation() {
         return location;
     }
+
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }
