@@ -23,6 +23,17 @@ public class Product {
         this.setImage(image);
     }
 
+
+    public Product(String code,String name,double price,int quantity,String type){
+        this.setCode(code);
+        this.setName(name);
+        this.setPrice(price);
+        this.setQuantity(quantity);
+        this.setType(type);
+    }
+
+
+
     public String getCode() {
         return code;
     }
