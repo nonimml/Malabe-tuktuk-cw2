@@ -224,4 +224,45 @@ public class Controller {
         });
     }
 
+
+    public void CartTotal(){
+        double subTotal = 0.0;
+        double bulkDiscount = 0.0;
+        double synergyDiscount = 0.0;
+        boolean hasEngine = false;
+        boolean hasElectricalItem = false;
+
+        for(int i= 0; i<posTable.getItems().size();i++){
+            Product item = posTable.getItems().get(i);
+            subTotal = item.getPrice()*item.getQuantity();
+            subTotal += subTotal;
+
+            if(item.getQuantity()>=3){
+                double itemBulkDiscount = subTotal * 0.5;
+                bulkDiscount += itemBulkDiscount;
+            }
+
+            if(item.getType() != null){
+                String category = item.getType().trim().toUpperCase();
+                if(category.equalsIgnoreCase("ENGINE")){
+                    hasEngine = true;
+                }
+                else if (category.equalsIgnoreCase("ELECTRICAL")){
+                    hasElectricalItem = true;
+                }
+            }
+        }
+        double temp = subTotal - bulkDiscount;
+
+        if(hasEngine && hasElectricalItem){
+            synergyDiscount = temp *0.10;
+        }
+        double netTotal = temp -  synergyDiscount;
+        subtotalLabel.setText("Subtotal: Rs."+ subTotal);
+        bulkDiscountLabel.setText("Bulk Discount: Rs."+ bulkDiscount);
+        synergyDiscountLabel.setText("Synergy Discount: Rs."+ synergyDiscount);
+        netTotalLabel.setText("Net Total: Rs."+netTotal);
+
+    }
+
 }
