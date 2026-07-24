@@ -13,4 +13,28 @@ public class Inventory {
         this.products = new ArrayList<>();
         this.cart = new ArrayList<>();
     }
+
+    public  void addItems(Product product){
+        products.add(product);
+    }
+
+    public List<Product> getProduct(){
+        return products;
+    }
+
+    public void addDealers(Dealer dealer){
+        dealers.add(dealer);
+    }
+
+    public List<Dealer> getDealers(){
+        return dealers;
+    }
+
+    public  void addToCart(Product product){
+        cart.add(product);
+    }
+
+    public List<Product> getCartItems(){
+        return cart;
+    }
 }
