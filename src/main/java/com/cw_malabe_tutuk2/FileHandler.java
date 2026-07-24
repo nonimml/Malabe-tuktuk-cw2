@@ -54,8 +54,8 @@ public class FileHandler {
     }
 
     private File textFileManager(){
-        File INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk/data/inventory_legacy.txt");
-        File NEW_INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk/data/newinventory.txt");
+        File INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk2/data/inventory_legacy.txt");
+        File NEW_INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk2/data/newinventory.txt");
         if(NEW_INVENTORY_FILE.exists())
             return NEW_INVENTORY_FILE;
         else if (INVENTORY_FILE.exists()) {
@@ -127,7 +127,7 @@ public class FileHandler {
 
     public  void dealerData(Inventory inventory){
         final int FIELD_COUNT = 4;
-        File DEALER_FILE = new File("src/main/java/com/cw_malabe_tutuk/data/dealers_legacy.txt");
+        File DEALER_FILE = new File("src/main/java/com/cw_malabe_tutuk2/data/dealers_legacy.txt");
         if(!DEALER_FILE.exists()) {
             System.out.println("File not Exists");
             return;
@@ -160,14 +160,14 @@ public class FileHandler {
 
 
     public  void DataWriter(Inventory inventory){
-        File directory = new File("src/main/java/com/cw_malabe_tutuk/data");
+        File directory = new File("src/main/java/com/cw_malabe_tutuk2/data");
         if(!directory.exists()){
             directory.mkdir();
         }
 
         File file = new File(directory, "newinventory.txt");
 
-        try(FileWriter fileWriter = new FileWriter("src/main/java/com/cw_malabe_tutuk/data/newinventory.txt")){
+        try(FileWriter fileWriter = new FileWriter("src/main/java/com/cw_malabe_tutuk2/data/newinventory.txt")){
             List<Product> products = inventory.getProduct();
             for(int j = 0;j<products.size();j++) {
                 Product product = products.get(j);
