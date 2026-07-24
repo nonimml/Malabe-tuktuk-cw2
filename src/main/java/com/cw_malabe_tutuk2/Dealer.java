@@ -12,4 +12,20 @@ public class Dealer {
         this.setContactInfo(contactInfo);
         this.setLocation(location);
     }
+
+    public String getSupplierId() {
+        return supplierId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    public String getLocation() {
+        return location;
+    }
 }
