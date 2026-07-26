@@ -5,7 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class UpdateInventoryController {
@@ -64,7 +68,7 @@ public class UpdateInventoryController {
             int Quantity = readInt(stock.getText());
             String Type = type.getText().toUpperCase();
             String Date = readDate(date.getText());
-            String ImagePath = imagePath.getText();
+            String ImagePath = AddImage(imagePath.getText());
             int LowStock = readInt(lowStock.getText());
 
             Product product = new Product(Code,Brand,Name,Price,Quantity,Type,Date,ImagePath);
@@ -212,6 +216,32 @@ public class UpdateInventoryController {
             System.out.println("Error: date can't contain String");
         }
         return null;
+    }
+
+    private String AddImage(String path){
+        Path sourcePath = Paths.get(path.replace("\"","").trim());
+        File targetDirectory = new File("src/main/java/com/cw_malabe_tutuk2/data/Images");
+        String fileName = null;
+        if(     sourcePath.toString().contains(".jpg") ||
+                sourcePath.toString().contains(".png") ||
+                sourcePath.toString().contains(".jpeg"))
+        {
+            fileName = sourcePath.getFileName().toString().toLowerCase();
+            try{
+                if(targetDirectory.exists()){
+                    Path targetPath = Paths.get(targetDirectory+"/"+fileName);
+                    Files.copy(sourcePath,targetPath);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+                System.out.println("Fail to copy the image");
+                return null;
+            }
+        }else{
+            System.out.println("file format should be either (.jpg/.png/.jpeg)");
+            return null;
+        }
+        return fileName;
     }
 
 
