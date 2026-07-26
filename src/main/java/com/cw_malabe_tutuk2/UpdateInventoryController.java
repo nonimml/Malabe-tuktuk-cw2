@@ -247,11 +247,15 @@ public class UpdateInventoryController {
                     Path targetPath = Paths.get(targetDirectory+"/"+fileName);
                     Files.copy(sourcePath,targetPath);
                 }
-            }catch (IOException e){
-                
-                System.out.println("Fail to copy the image");
+            }catch (FileAlreadyExistsException e){
+                System.out.println("image  already in the system change the name or add a new image");
                 isError = true;
                 return null;
+            }catch (IOException e){
+
+            System.out.println("Fail to copy the image");
+            isError = true;
+            return null;
             }
         }else{
             System.out.println("file format should be either (.jpg/.png/.jpeg)");
