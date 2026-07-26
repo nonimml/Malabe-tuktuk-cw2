@@ -233,7 +233,7 @@ public class UpdateInventoryController {
                     Files.copy(sourcePath,targetPath);
                 }
             }catch (IOException e){
-                e.printStackTrace();
+                
                 System.out.println("Fail to copy the image");
                 return null;
             }
