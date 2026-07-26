@@ -27,6 +27,7 @@ public class UpdateInventoryController {
     @FXML private TextField type;
     @FXML private TextField lowStock;
     private boolean UpdateMode = false;
+    private boolean isError = false;
 
     @FXML private void Cancel(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -63,30 +64,32 @@ public class UpdateInventoryController {
         try {
             String Code = readItemCode(codeField.getText());
             String Brand = brand.getText();
-            String Name =   name.getText();
+            String Name = name.getText();
             double Price = readPrice(price.getText());
             int Quantity = readInt(stock.getText());
             String Type = type.getText().toUpperCase();
             String Date = readDate(date.getText());
             String ImagePath = AddImage(imagePath.getText());
             int LowStock = readInt(lowStock.getText());
+            if(!isError) {
+                Product product = new Product(Code, Brand, Name, Price, Quantity, Type, Date, ImagePath);
+                product.setMinThreshold(LowStock);
 
-            Product product = new Product(Code,Brand,Name,Price,Quantity,Type,Date,ImagePath);
-            product.setMinThreshold(LowStock);
-
-            if(!this.UpdateMode){
-                inventory.getProduct().add(product);
-            }else{
-                List<Product> products = inventory.getProduct();
-                for(int i=0;i<products.size();i++){
-                    if(products.get(i).getCode().equalsIgnoreCase(Code)){
-                        products.set(i,product);
+                if (!this.UpdateMode) {
+                    inventory.getProduct().add(product);
+                } else {
+                    List<Product> products = inventory.getProduct();
+                    for (int i = 0; i < products.size(); i++) {
+                        if (products.get(i).getCode().equalsIgnoreCase(Code)) {
+                            products.set(i, product);
+                        }
                     }
                 }
+                fileHandler.DataWriter(inventory);
+                System.out.println("successful write data!");
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.close();
             }
-            System.out.println("Done!");
-            fileHandler.DataWriter(inventory);
-
         }catch (Exception e){
             System.out.println("Error: Save Canceled");
         }
@@ -121,12 +124,15 @@ public class UpdateInventoryController {
         }
         if (!flagCodeChar) {
             System.out.println("Code should contain 'P' as the first character");
+            isError = true;
             return null;
         } else if (!flagCodedigit) {
             System.out.println("code should contain 3 digits after the 'P' ");
+            isError = true;
             return null;
         } else if (flagCodeExist) {
             System.out.println("Code already exists in inventory");
+            isError = true;
             return null;
         }
         return itemCode;
@@ -139,8 +145,10 @@ public class UpdateInventoryController {
             if(!(Price < 1)){
                 return Price;
             }
+            isError = true;
             System.out.println("Price can't be Negative");
         } catch (Exception e) {
+            isError = true;
             System.out.println("Enter a number not a String");
         }
         return 0;
@@ -152,9 +160,11 @@ public class UpdateInventoryController {
             if(!(Number < 0)){
                 return Number;
             }
+            isError = true;
             System.out.println("The Value can't be negative");
         } catch (Exception e) {
             System.out.println("Enter a numerical value not a String");
+            isError = true;
         }
         return 0;
     }
@@ -164,12 +174,14 @@ public class UpdateInventoryController {
 
         if (!date.contains("/") || date.length() != 10){
             System.out.println("invalid format : formate DD/MM/YYYY");
+            isError = true;
             return null;
         }
         dateValues = date.split("/");
 
         if (dateValues[0].length() != 2 || dateValues[1].length() != 2 || dateValues[2].length() != 4 ) {
             System.out.println("invalid format date should be: DD/MM/YYYY");
+            isError = true;
             return null;
         }
 
@@ -180,10 +192,12 @@ public class UpdateInventoryController {
 
             if(month < 1 || month > 12){
                 System.out.println("months can only be (1-12) not "+month);
+                isError = true;
                 return null;
             }
             else if (year < 2000 || year > 2100){
                 System.out.println("year is invalid it should be 2000-2100");
+                isError = true;
                 return null;
             }
 
@@ -195,6 +209,7 @@ public class UpdateInventoryController {
                     if ((i == 2) && (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
                         if (day < 1 || day > 29){
                             System.out.println("Invalid day entered: " + day);
+                            isError = true;
                             return null;
 
                         }
@@ -203,7 +218,8 @@ public class UpdateInventoryController {
 
                     else{
                         if (day < 1 || day > monthdays[i]) {
-                            System.out.println("days : " + monthdays[i] + "month" + month);
+                            System.out.println("Error: month and days aren't matching");
+                            isError = true;
                             return null;
                         }
                     }
@@ -214,6 +230,7 @@ public class UpdateInventoryController {
 
         }catch (NumberFormatException e){
             System.out.println("Error: date can't contain String");
+            isError = true;
         }
         return null;
     }
@@ -235,10 +252,12 @@ public class UpdateInventoryController {
             }catch (IOException e){
                 
                 System.out.println("Fail to copy the image");
+                isError = true;
                 return null;
             }
         }else{
             System.out.println("file format should be either (.jpg/.png/.jpeg)");
+            isError = true;
             return null;
         }
         return fileName;
