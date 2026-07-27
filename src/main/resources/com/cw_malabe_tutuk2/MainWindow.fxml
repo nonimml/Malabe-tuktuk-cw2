@@ -115,7 +115,7 @@
             <VBox spacing="5">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label style="-fx-font-weight: bold;" text="Low-Stock Warnings" />
-                    <Label text="Alert Threshold:" />
+                    <Label fx:id="lowStockWarning" text="Alert Threshold:" />
                 </HBox>
                 <ListView fx:id="lowStockWarningArea" prefHeight="80.0" prefWidth="1180.0" />
             </VBox>

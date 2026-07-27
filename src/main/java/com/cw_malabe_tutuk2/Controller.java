@@ -47,6 +47,7 @@ public class Controller {
     @FXML private Label bulkDiscountLabel;
     @FXML private Label synergyDiscountLabel;
     @FXML private Label netTotalLabel;
+    @FXML private Label lowStockWarning;
 
     public Controller() {
         refresh = this;
@@ -195,6 +196,14 @@ public class Controller {
                                 showAlert("quantity should be greater than zero","Cart Error");
                                 return;
                             }
+                            if(quantity>product.getQuantity()){
+                                showAlert("Not enough items in inventory: Stock has: "+product.getQuantity()+" items","Cart Error");
+                                return;
+                            }
+                            int remainingStock = product.getQuantity() - quantity;
+                            if(remainingStock<product.getMinThreshold()){
+                                lowStockWarning.setText("Alert Threshold: "+ product.getCode());
+                            }
                             boolean itemExist = false;
                             for(int i=0;i<posTable.getItems().size();i++){
                                 Product item = posTable.getItems().get(i);
@@ -217,6 +226,9 @@ public class Controller {
                                 qtyInput.clear();
                             }
                             CartTotal();
+                            product.setQuantity(remainingStock);
+                            fileHandler.DataWriter(inventory);
+                            refreshInventory();
                         }
                     }catch (NumberFormatException e){
                         showAlert("quantity should be a number not a string","Cart Error");
