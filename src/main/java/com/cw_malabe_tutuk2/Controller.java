@@ -344,4 +344,10 @@ public class Controller {
         InventoryStatus();
     }
 
+    public void refreshInventory() {
+        fileHandler.itemsData(inventory);
+        inventoryData.setAll(inventory.ViewInventory());
+        InventoryStatus();
+    }
+
 }
