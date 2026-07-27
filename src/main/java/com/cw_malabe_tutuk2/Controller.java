@@ -4,10 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-
+import javafx.scene.image.ImageView;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -284,6 +287,39 @@ public class Controller {
         }
     }
 
+    public void showImage() {
+        Image.setCellValueFactory(new PropertyValueFactory<>("image"));
+
+        Image.setCellFactory(column -> new TableCell<Product, String>() {
+            ImageView imageView = new ImageView();
+            {
+                imageView.setFitWidth(60);
+                imageView.setFitHeight(60);
+                imageView.setPreserveRatio(true);
+                setAlignment(Pos.CENTER);
+            }
+
+            @Override
+            protected void updateItem(String fileName, boolean empty) {
+                super.updateItem(fileName, empty);
+
+                if (empty || fileName == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                File imageFile = new File("src/main/java/com/cw_malabe_tutuk2/data/Images/" + fileName.trim());
+
+                if (imageFile.exists()) {
+                    imageView.setImage(new Image(imageFile.toURI().toString()));
+                    setGraphic(imageView);
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
+    }
+
 
     public void loadData() {
         Code.setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -293,7 +329,7 @@ public class Controller {
         Date.setCellValueFactory(new PropertyValueFactory<>("date"));
         Price.setCellValueFactory(new PropertyValueFactory<>("price"));
         Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        Image.setCellValueFactory(new PropertyValueFactory<>("image"));
+        showImage();
 
         partCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         partName.setCellValueFactory(new PropertyValueFactory<>("name"));
