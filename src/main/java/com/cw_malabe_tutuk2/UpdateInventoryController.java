@@ -75,6 +75,7 @@ public class UpdateInventoryController {
                 Product product = new Product(Code, Brand, Name, Price, Quantity, Type, Date, ImagePath,LowStock);
                 if (!this.UpdateMode) {
                     inventory.getProduct().add(product);
+                    fileHandler.AuditLogger("ADD_PRODUCT",Code,Quantity);
                 } else {
                     List<Product> products = inventory.getProduct();
                     for (int i = 0; i < products.size(); i++) {
@@ -82,6 +83,7 @@ public class UpdateInventoryController {
                             products.set(i, product);
                         }
                     }
+                    fileHandler.AuditLogger("UPDATE_PRODUCT",Code,Quantity);
                 }
                 fileHandler.DataWriter(inventory);
                 main.refreshInventory();
@@ -124,19 +126,20 @@ public class UpdateInventoryController {
             }
         }
         if (!flagCodeChar) {
-            showAlert("Code should contain 'P' as the first character","Item Code Error");
+            showAlert("Code should contain 'P' as the first character", "Item Code Error");
             isError = true;
             return null;
         } else if (!flagCodedigit) {
-            showAlert("code should contain 3 digits after the 'P' ","Item Code Error");
+            showAlert("code should contain 3 digits after the 'P' ", "Item Code Error");
             isError = true;
             return null;
         } else if (flagCodeExist) {
-            showAlert("Code already exists in inventory","Item Code Error");
+            showAlert("Code already exists in inventory", "Item Code Error");
             isError = true;
             return null;
         }
         return itemCode;
+
     }
 
 

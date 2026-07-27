@@ -1,10 +1,8 @@
 package com.cw_malabe_tutuk2;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -197,7 +195,22 @@ public class FileHandler {
     }
 
 
-    public void auditLogger(){
+    public void AuditLogger(String action, String itemCode, int quantity){
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String timestamp = LocalDateTime.now().format(format);
+        String logEntry = String.format("[%s] Action: %s | Item: %s | Quantity: %d%n",
+                timestamp, action, itemCode, quantity);
 
+        File logFile = new File("src/main/java/com/cw_malabe_tutuk2/data/audit_log.txt");
+
+        if (!logFile.exists()) {
+            logFile.mkdirs();
+        }
+
+        try (FileWriter auditWriter = new FileWriter(logFile, true)) {
+            auditWriter.write(logEntry);
+        } catch (IOException e) {
+            System.err.println("Failed to write to audit_log.txt");
+        }
     }
 }

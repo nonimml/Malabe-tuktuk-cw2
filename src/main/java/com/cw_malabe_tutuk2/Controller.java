@@ -141,6 +141,7 @@ public class Controller {
             return;
         }
         inventory.getProduct().remove(deleteProduct);
+        fileHandler.AuditLogger("DELETE_PRODUCT",deleteProduct.getCode(),deleteProduct.getQuantity());
         fileHandler.DataWriter(inventory);
         refreshInventory();
 
@@ -279,6 +280,7 @@ public class Controller {
             }
             for(int i = 0; i<posTable.getItems().size();i++){
                 Product cartItems = posTable.getItems().get(i);
+                fileHandler.AuditLogger("CHECKOUT",posTable.getItems().get(i).getCode(),posTable.getItems().get(i).getQuantity());
                 inventory.addToCart(cartItems);
             }
             posTable.getItems().clear();
