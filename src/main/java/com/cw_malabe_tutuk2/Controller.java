@@ -98,7 +98,6 @@ public class Controller {
         boolean isMinPriceEmpty = !minPriceInput.getText().trim().isEmpty();
         boolean isMaxPriceEmpty = !maxPriceInput.getText().trim().isEmpty();
         if(!isCategoryEmpty && !isMinPriceEmpty && !isMaxPriceEmpty) {
-            System.out.println();
             showAlert("Filter is Empty add a filter first","Search Error");
             return;
         }
@@ -138,7 +137,6 @@ public class Controller {
     @FXML private void DeletePart(ActionEvent event){
         Product deleteProduct = inventoryTable.getSelectionModel().getSelectedItem();
         if(deleteProduct == null){
-            System.out.println();
             showAlert("First Select the item you want to Delete","Delete Item Error");
             return;
         }
