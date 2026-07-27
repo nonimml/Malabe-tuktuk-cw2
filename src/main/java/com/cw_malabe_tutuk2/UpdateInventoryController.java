@@ -100,46 +100,47 @@ public class UpdateInventoryController {
     }
 
     private String readItemCode(String itemCode) {
+        if (!this.UpdateMode) {
+            if (itemCode == null || itemCode.length() != 4) {
+                showAlert("Code should have 4 character and can't be empty", "Item Code Error");
+                return null;
 
-        if (itemCode == null || itemCode.length() != 4) {
-            showAlert("Code should have 4 character and can't be empty","Item Code Error");
-            return null;
-
-        }
-        boolean flagCodeChar = (itemCode.charAt(0) == 'P');
-
-        boolean flagCodedigit = true;
-        for (int i = 1; i < 4; i++) {
-            if (!Character.isDigit(itemCode.charAt(i))) {
-                flagCodedigit = false;
             }
-        }
+            boolean flagCodeChar = (itemCode.charAt(0) == 'P');
 
-        boolean flagCodeExist = false;
-        if (flagCodeChar && flagCodedigit) {
-            for (int j = 0; j < inventory.getProduct().size(); j++) {
-                if (itemCode.equals(inventory.getProduct().get(j).getCode())) {
-                    flagCodeExist = true;
-                    break;
-
+            boolean flagCodedigit = true;
+            for (int i = 1; i < 4; i++) {
+                if (!Character.isDigit(itemCode.charAt(i))) {
+                    flagCodedigit = false;
                 }
             }
-        }
-        if (!flagCodeChar) {
-            showAlert("Code should contain 'P' as the first character", "Item Code Error");
-            isError = true;
-            return null;
-        } else if (!flagCodedigit) {
-            showAlert("code should contain 3 digits after the 'P' ", "Item Code Error");
-            isError = true;
-            return null;
-        } else if (flagCodeExist) {
-            showAlert("Code already exists in inventory", "Item Code Error");
-            isError = true;
-            return null;
+
+            boolean flagCodeExist = false;
+            if (flagCodeChar && flagCodedigit) {
+                for (int j = 0; j < inventory.getProduct().size(); j++) {
+                    if (itemCode.equals(inventory.getProduct().get(j).getCode())) {
+                        flagCodeExist = true;
+                        break;
+
+                    }
+                }
+            }
+            if (!flagCodeChar) {
+                showAlert("Code should contain 'P' as the first character", "Item Code Error");
+                isError = true;
+                return null;
+            } else if (!flagCodedigit) {
+                showAlert("code should contain 3 digits after the 'P' ", "Item Code Error");
+                isError = true;
+                return null;
+            } else if (flagCodeExist) {
+                showAlert("Code already exists in inventory", "Item Code Error");
+                isError = true;
+                return null;
+            }
+            return itemCode;
         }
         return itemCode;
-
     }
 
 
