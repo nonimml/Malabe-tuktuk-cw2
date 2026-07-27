@@ -12,40 +12,55 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileHandler {
-
+    private boolean newInventoryFile = false;
     public  void itemsData(Inventory inventory){
         final int FIELD_COUNT = 8;
+        final int NEW_FIELD_COUNT = 9;
         try(Scanner file_reader = new Scanner(textFileManager())) {
             while (file_reader.hasNextLine()) {
                 String line = file_reader.nextLine();
-                List<String> Fields = parseLines(FIELD_COUNT ,line);
-                if(Fields.size() != FIELD_COUNT){
-                    System.out.println("Unexpected field size");
-                    continue;
-                }
+                if(!newInventoryFile) {
+                    List<String> Fields = parseLines(FIELD_COUNT, line);
+                    if (Fields.size() != FIELD_COUNT) {
+                        System.out.println("Unexpected field size");
+                        continue;
+                    }
+                    try {
+                        String code = Fields.get(0);
+                        String name = Fields.get(1);
+                        String brand = Fields.get(2);
+                        double price = Double.parseDouble(Fields.get(3));
+                        int quantity = Integer.parseInt(Fields.get(4));
+                        String type = Fields.get(5).toUpperCase();
+                        String date = DateFormat(Fields.get(6));
+                        String image = Fields.get(7);
+                        Product product = new Product(code, name, brand, price, quantity, type, date, image, 0);
+                        inventory.addItems(product);
 
-                try{
-                    String code = Fields.get(0);
+                    } catch (Exception e) {
+                        System.out.println("can't push data to the List");
+                    }
+                }else{
+                    List<String> Fields = parseLines(NEW_FIELD_COUNT, line);
+                    if (Fields.size() != NEW_FIELD_COUNT) {
+                        System.out.println("Unexpected field size");
+                    }
+                    try {
+                        String code = Fields.get(0);
+                        String name = Fields.get(1);
+                        String brand = Fields.get(2);
+                        double price = Double.parseDouble(Fields.get(3));
+                        int quantity = Integer.parseInt(Fields.get(4));
+                        String type = Fields.get(5).toUpperCase();
+                        String date = DateFormat(Fields.get(6));
+                        String image = Fields.get(7);
+                        int lowStock = Integer.parseInt(Fields.get(8));
+                        Product product = new Product(code, name, brand, price, quantity, type, date, image, lowStock);
+                        inventory.addItems(product);
 
-                    String name = Fields.get(1);
-
-                    String brand = Fields.get(2);
-
-                    double price = Double.parseDouble(Fields.get(3));
-
-                    int quantity = Integer.parseInt(Fields.get(4));
-
-                    String type = Fields.get(5).toUpperCase();
-
-                    String date = DateFormat(Fields.get(6));
-
-                    String image = Fields.get(7);
-
-                    Product product = new Product(code,name,brand,price,quantity,type,date,image);
-                    inventory.addItems(product);
-
-                }catch (Exception e){
-                    System.out.println("can't push data to the List");
+                    } catch (Exception e) {
+                        System.out.println("can't push data to the List ");
+                    }
                 }
             }
         }catch (FileNotFoundException e) {
@@ -56,8 +71,10 @@ public class FileHandler {
     private File textFileManager(){
         File INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk2/data/inventory_legacy.txt");
         File NEW_INVENTORY_FILE = new File("src/main/java/com/cw_malabe_tutuk2/data/newinventory.txt");
-        if(NEW_INVENTORY_FILE.exists())
+        if(NEW_INVENTORY_FILE.exists()) {
+            newInventoryFile = true;
             return NEW_INVENTORY_FILE;
+        }
         else if (INVENTORY_FILE.exists()) {
             return INVENTORY_FILE;
         }
@@ -67,10 +84,10 @@ public class FileHandler {
 
 
     private  List<String> parseLines(int count ,String line){
-        if(count == 8){
-            if(line == null || line.trim().isEmpty()) {
-                return new ArrayList<>();
-            }
+        if(line == null || line.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+        if(count == 8 || count == 9){
             String characters = ";|\\||,(?!(?<=\\b[A-Za-z]{3,9} \\d{1,2},)\\s*\\d{4}\\b)";
             String[] rawFiled = line.split(characters,-1);
             List<String> items = new ArrayList<>();
@@ -78,9 +95,6 @@ public class FileHandler {
                 items.add(clean(count,field));
             }return items;
         } else if (count == 4) {
-            if(line == null || line.trim().isEmpty()) {
-                return new ArrayList<>();
-            }
             String characters = "[,;|]";
             String[] rawFiled = line.split(characters,-1);
             List<String> items = new ArrayList<>();
@@ -92,7 +106,7 @@ public class FileHandler {
     }
 
     private  String clean(int count ,String field){
-        if(count == 8){
+        if(count == 8 || count == 9){
             String trimmed = field.trim();
             trimmed = trimmed.replaceAll("(?i)^Rs\\.?\\s*","");
             return trimmed.isEmpty() ? null : trimmed;
