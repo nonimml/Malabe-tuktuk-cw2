@@ -70,9 +70,7 @@ public class UpdateInventoryController {
             String ImagePath = AddImage(imagePath.getText());
             int LowStock = readInt(lowStock.getText());
             if(!isError) {
-                Product product = new Product(Code, Brand, Name, Price, Quantity, Type, Date, ImagePath);
-                product.setMinThreshold(LowStock);
-
+                Product product = new Product(Code, Brand, Name, Price, Quantity, Type, Date, ImagePath,LowStock);
                 if (!this.UpdateMode) {
                     inventory.getProduct().add(product);
                 } else {
