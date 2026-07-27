@@ -3,6 +3,7 @@ package com.cw_malabe_tutuk2;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.File;
@@ -57,7 +58,7 @@ public class UpdateInventoryController {
                 || price.getText().isEmpty() || stock.getText().isEmpty()
                 || type.getText().isEmpty() || date.getText().isEmpty()
                 || imagePath.getText().isEmpty() || lowStock.getText().isEmpty()) {
-            System.out.println("text filed is empty");
+            showAlert("text filed is empty","Insert Error");
             return;
         }
         try {
@@ -90,8 +91,8 @@ public class UpdateInventoryController {
 
             }
         }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("Error: Save Canceled");
+            showAlert("Save Canceled! ","Insert Error");
+            isError = true;
         }
 
     }
@@ -99,7 +100,7 @@ public class UpdateInventoryController {
     private String readItemCode(String itemCode) {
 
         if (itemCode == null || itemCode.length() != 4) {
-            System.out.println("Code should have 4 character and can't be empty");
+            showAlert("Code should have 4 character and can't be empty","Item Code Error");
             return null;
 
         }
@@ -123,15 +124,15 @@ public class UpdateInventoryController {
             }
         }
         if (!flagCodeChar) {
-            System.out.println("Code should contain 'P' as the first character");
+            showAlert("Code should contain 'P' as the first character","Item Code Error");
             isError = true;
             return null;
         } else if (!flagCodedigit) {
-            System.out.println("code should contain 3 digits after the 'P' ");
+            showAlert("code should contain 3 digits after the 'P' ","Item Code Error");
             isError = true;
             return null;
         } else if (flagCodeExist) {
-            System.out.println("Code already exists in inventory");
+            showAlert("Code already exists in inventory","Item Code Error");
             isError = true;
             return null;
         }
@@ -146,10 +147,10 @@ public class UpdateInventoryController {
                 return Price;
             }
             isError = true;
-            System.out.println("Price can't be Negative");
+            showAlert("Price can't be Negative","Price Error");
         } catch (Exception e) {
             isError = true;
-            System.out.println("Enter a number not a String");
+            showAlert("Enter a number not a String","Price Error");
         }
         return 0;
     }
@@ -161,9 +162,9 @@ public class UpdateInventoryController {
                 return Number;
             }
             isError = true;
-            System.out.println("The Value can't be negative");
+            showAlert("The Value can't be negative","Value Error");
         } catch (Exception e) {
-            System.out.println("Enter a numerical value not a String");
+            showAlert("Enter a numerical value not a String","Value Error");
             isError = true;
         }
         return 0;
@@ -173,14 +174,14 @@ public class UpdateInventoryController {
         String[] dateValues;
 
         if (!date.contains("/") || date.length() != 10){
-            System.out.println("invalid format : formate DD/MM/YYYY");
+            showAlert("invalid format : formate DD/MM/YYYY","Date Error");
             isError = true;
             return null;
         }
         dateValues = date.split("/");
 
         if (dateValues[0].length() != 2 || dateValues[1].length() != 2 || dateValues[2].length() != 4 ) {
-            System.out.println("invalid format date should be: DD/MM/YYYY");
+            showAlert("invalid format date should be: DD/MM/YYYY","Date Error");
             isError = true;
             return null;
         }
@@ -191,12 +192,12 @@ public class UpdateInventoryController {
             int year = Integer.parseInt(dateValues[2]);
 
             if(month < 1 || month > 12){
-                System.out.println("months can only be (1-12) not "+month);
+                showAlert("months can only be (1-12)","Date Error");
                 isError = true;
                 return null;
             }
             else if (year < 2000 || year > 2100){
-                System.out.println("year is invalid it should be 2000-2100");
+                showAlert("year is invalid it should be 2000-2100","Date Error");
                 isError = true;
                 return null;
             }
@@ -208,7 +209,7 @@ public class UpdateInventoryController {
                 if ((month - 1) == i) {
                     if ((i == 2) && (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
                         if (day < 1 || day > 29){
-                            System.out.println("Invalid day entered: " + day);
+                            showAlert(" (leap year) on February days can only be (1-29) ","Date Error");
                             isError = true;
                             return null;
 
@@ -218,7 +219,7 @@ public class UpdateInventoryController {
 
                     else{
                         if (day < 1 || day > monthdays[i]) {
-                            System.out.println("Error: month and days aren't matching");
+                            showAlert("  month and days aren't matching ","Date Error");
                             isError = true;
                             return null;
                         }
@@ -229,7 +230,7 @@ public class UpdateInventoryController {
             return date;
 
         }catch (NumberFormatException e){
-            System.out.println("Error: date can't contain String");
+            showAlert("date can't contain String","Date Error");
             isError = true;
         }
         return null;
@@ -250,22 +251,27 @@ public class UpdateInventoryController {
                     Files.copy(sourcePath,targetPath);
                 }
             }catch (FileAlreadyExistsException e){
-                System.out.println("image  already in the system change the name or add a new image");
+                showAlert("image  already in the system change the name or add a new image","Image Error");
                 isError = true;
                 return null;
             }catch (IOException e){
-
-            System.out.println("Fail to copy the image");
+            showAlert("Fail to copy the image","Image Error");
             isError = true;
             return null;
             }
         }else{
-            System.out.println("file format should be either (.jpg/.png/.jpeg)");
+            showAlert("file format should be either (.jpg/.png/.jpeg)","Image Error");
             isError = true;
             return null;
         }
         return fileName;
     }
 
-
+    private void showAlert(String prompt,String headText){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(headText);
+        alert.setContentText(prompt);
+        alert.showAndWait();
+    }
 }

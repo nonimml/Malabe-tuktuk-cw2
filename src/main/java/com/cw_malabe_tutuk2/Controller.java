@@ -71,7 +71,7 @@ public class Controller {
 
             if(event.getSource() == updateBtn){
                 if(selectedProduct == null){
-                    System.out.println("select the row First");
+                    showAlert("select the row First","Update Error");
                     return;
                 }
             }
@@ -98,7 +98,8 @@ public class Controller {
         boolean isMinPriceEmpty = !minPriceInput.getText().trim().isEmpty();
         boolean isMaxPriceEmpty = !maxPriceInput.getText().trim().isEmpty();
         if(!isCategoryEmpty && !isMinPriceEmpty && !isMaxPriceEmpty) {
-            System.out.println("Filter is Empty add a filter first");
+            System.out.println();
+            showAlert("Filter is Empty add a filter first","Search Error");
             return;
         }
 
@@ -123,7 +124,7 @@ public class Controller {
             inventoryData.setAll(filterProduct);
 
         }catch(NullPointerException e){
-            System.out.println("values can't be null");
+            showAlert("values can't be null","Search Error");
         }
     }
 
@@ -137,7 +138,8 @@ public class Controller {
     @FXML private void DeletePart(ActionEvent event){
         Product deleteProduct = inventoryTable.getSelectionModel().getSelectedItem();
         if(deleteProduct == null){
-            System.out.println("First Select the item you want to Delete");
+            System.out.println();
+            showAlert("First Select the item you want to Delete","Delete Item Error");
             return;
         }
         inventory.getProduct().remove(deleteProduct);
@@ -184,14 +186,14 @@ public class Controller {
                         Product product = (Product) getTableRow().getItem();
                         if (product != null) {
                             if(qtyInput.getText().isEmpty()){
-                                System.out.println("quantity is empty");
+                                showAlert("quantity is empty","Cart Error");
                                 return;
                             }
 
                             int quantity = Integer.parseInt(qtyInput.getText().trim());
 
                             if (quantity < 1) {
-                                System.out.println("quantity should be greater than zero");
+                                showAlert("quantity should be greater than zero","Cart Error");
                                 return;
                             }
                             boolean itemExist = false;
@@ -218,7 +220,7 @@ public class Controller {
                             CartTotal();
                         }
                     }catch (NumberFormatException e){
-                        System.out.println("quantity should be a number not a string");
+                        showAlert("quantity should be a number not a string","Cart Error");
                     }
                 });
                 emptyProperty().addListener(
@@ -284,7 +286,7 @@ public class Controller {
             posTable.getItems().clear();
             CartTotal();
         }else {
-            System.out.println("Cart is empty load some Items");
+            showAlert("Cart is empty load some Items","Cart Error");
         }
     }
 
@@ -319,6 +321,14 @@ public class Controller {
                 }
             }
         });
+    }
+
+    private void showAlert(String prompt,String headText){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(headText);
+        alert.setContentText(prompt);
+        alert.showAndWait();
     }
 
 
