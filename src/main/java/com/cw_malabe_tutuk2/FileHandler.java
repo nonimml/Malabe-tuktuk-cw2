@@ -16,6 +16,7 @@ public class FileHandler {
     public  void itemsData(Inventory inventory){
         final int FIELD_COUNT = 8;
         final int NEW_FIELD_COUNT = 9;
+        inventory.clearProducts();
         try(Scanner file_reader = new Scanner(textFileManager())) {
             while (file_reader.hasNextLine()) {
                 String line = file_reader.nextLine();
@@ -192,6 +193,11 @@ public class FileHandler {
         }catch (IOException e){
             System.out.println("Error: can't write to the file");
         }
+
+    }
+
+
+    public void auditLogger(){
 
     }
 }

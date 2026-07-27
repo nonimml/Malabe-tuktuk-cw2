@@ -39,6 +39,10 @@ public class Inventory {
         return cart;
     }
 
+    public void clearProducts(){
+        products.clear();
+    }
+
     public List<Product> ViewInventory() {
         List<Product> sortedList = new ArrayList<>(this.products);
         int size = sortedList.size();

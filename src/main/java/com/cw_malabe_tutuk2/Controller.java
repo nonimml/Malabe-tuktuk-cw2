@@ -15,9 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
+    private final ObservableList<Product> inventoryData = FXCollections.observableArrayList();
+    private static Controller refresh;
 
     private Inventory inventory = new Inventory();
     private FileHandler fileHandler = new FileHandler();
+
     @FXML private TableView<Product> inventoryTable;
     @FXML private TableColumn<Product, String> Code;
     @FXML private TableColumn<Product, String> Name;
@@ -44,6 +47,13 @@ public class Controller {
     @FXML private Label bulkDiscountLabel;
     @FXML private Label synergyDiscountLabel;
     @FXML private Label netTotalLabel;
+
+    public Controller() {
+        refresh = this;
+    }
+    public static Controller getMainController() {
+        return refresh;
+    }
 
     @FXML
     private void AddProduct(ActionEvent event) {
@@ -110,23 +120,18 @@ public class Controller {
 
             }
 
-            ObservableList<Product> observableList  = FXCollections.observableArrayList(filterProduct);
-            inventoryTable.setItems(observableList);
+            inventoryData.setAll(filterProduct);
 
         }catch(NullPointerException e){
             System.out.println("values can't be null");
         }
     }
 
-    @FXML private void ResetFilters(){
+    @FXML private void ResetFilters(ActionEvent event){
         categoryFilter.getSelectionModel().clearSelection();
         minPriceInput.clear();
         maxPriceInput.clear();
-
-        List<Product> sortedList = inventory.ViewInventory();
-        ObservableList<Product> observableList  = FXCollections.observableArrayList(sortedList);
-        inventoryTable.setItems(observableList);
-
+        refreshInventory();
     }
 
     @FXML private void DeletePart(ActionEvent event){
@@ -137,11 +142,7 @@ public class Controller {
         }
         inventory.getProduct().remove(deleteProduct);
         fileHandler.DataWriter(inventory);
-        List<Product> updatedInventoryList = inventory.ViewInventory();
-        ObservableList<Product> observableList  = FXCollections.observableArrayList(updatedInventoryList);
-        inventoryTable.setItems(observableList);
-        InventoryStatus();
-        loadCategory();
+        refreshInventory();
 
     }
 
@@ -337,11 +338,8 @@ public class Controller {
         partQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         AddToCartColumn();
 
-        fileHandler.itemsData(inventory);
-        List<Product> sortedList = inventory.ViewInventory();
-        ObservableList<Product> observableList  = FXCollections.observableArrayList(sortedList);
-        inventoryTable.setItems(observableList);
-        InventoryStatus();
+        inventoryTable.setItems(inventoryData);
+        refreshInventory();
     }
 
     public void refreshInventory() {

@@ -14,6 +14,7 @@ public class UpdateInventoryController {
 
     Inventory inventory = new Inventory();
     FileHandler fileHandler = new FileHandler();
+    Controller main = Controller.getMainController();
 
     @FXML private TextField brand;
     @FXML private TextField codeField;
@@ -82,11 +83,14 @@ public class UpdateInventoryController {
                     }
                 }
                 fileHandler.DataWriter(inventory);
+                main.refreshInventory();
                 System.out.println("successful write data!");
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.close();
+
             }
         }catch (Exception e){
+            e.printStackTrace();
             System.out.println("Error: Save Canceled");
         }
 
