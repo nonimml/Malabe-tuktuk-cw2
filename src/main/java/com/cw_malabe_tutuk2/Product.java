@@ -12,7 +12,7 @@ public class Product {
     private String image;
     private int  minThreshold;
 
-    public Product(String code, String name, String brand,double price, int quantity,String type,String date,String image) {
+    public Product(String code, String name, String brand,double price, int quantity,String type,String date,String image,int lowStock) {
         this.setCode(code);
         this.setName(name);
         this.setBrand(brand);
@@ -21,6 +21,7 @@ public class Product {
         this.setType(type);
         this.setDate(date);
         this.setImage(image);
+        this.setMinThreshold(lowStock);
     }
 
 
@@ -109,6 +110,6 @@ public class Product {
 
     @Override
     public String  toString(){
-        return code +","+ name +","+ brand +","+ "Rs."+price +","+ quantity +","+ type +","+ date + "," + image;
+        return code +","+ name +","+ brand +","+ "Rs."+price +","+ quantity +","+ type +","+ date + "," + image + "," + minThreshold;
     }
 }
