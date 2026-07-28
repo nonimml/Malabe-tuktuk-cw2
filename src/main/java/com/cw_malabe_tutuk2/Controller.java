@@ -252,11 +252,11 @@ public class Controller {
 
         for(int i= 0; i<posTable.getItems().size();i++){
             Product item = posTable.getItems().get(i);
-            subTotal = item.getPrice()*item.getQuantity();
-            subTotal += subTotal;
+            double itemTotal = item.getPrice() * item.getQuantity();
+            subTotal += itemTotal;
 
             if(item.getQuantity()>=3){
-                double itemBulkDiscount = subTotal * 0.5;
+                double itemBulkDiscount = itemTotal * 0.5;
                 bulkDiscount += itemBulkDiscount;
             }
 
